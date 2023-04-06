@@ -16,11 +16,13 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 //@Import(AppCtx2.class)  /** 여러가지 값을 넣을때 중괄호를 사용해서 배열로 넣을 수 있으며 한개일때는 그냥 넣는다 */
 public class AppCtx {
+
     @Bean
     @Qualifier("mDao1")
     public MemberDao memberDao() {
         return new MemberDao();
     }
+
    /**
     *  @Bean
     @Qualifier("mDao2")
@@ -32,6 +34,7 @@ public class AppCtx {
     public JoinService joinService() {
         return new JoinService();
     }
+
     @Bean
     public ListService listService() {
         return new ListService();

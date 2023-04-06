@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class JoinService {
     @Autowired  /** 스프링이 대신해서 객체를 주입해 준다 */
 //    @Qualifier("mDao1") /** 충돌시 문제해결할때 사용 어떤걸 주입받는지 명시 해준다 */
+
     private MemberDao memberDao;
 
 
@@ -16,6 +17,9 @@ public class JoinService {
     }
 
     public void join(Member member) {
+        System.out.println("insert 실행전 member :" + member);
         memberDao.insert(member);
+
+        System.out.println("insert 실행후 member :" + member);
     }
 }

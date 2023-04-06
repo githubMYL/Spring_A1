@@ -9,14 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+//@Component
 @ManualBean
 public class MemberDao {
     private static Map<String, Member> members = new HashMap<>();
 
     public void insert (Member member) {
+        System.out.println("insert 메소드가 전달받은 파라메타 : " +member);
         member.setRegDt(LocalDateTime.now());
         members.put(member.getUserId(), member);
+
 
     }
 
