@@ -9,7 +9,7 @@ import org.springframework.core.annotation.Order;
 import java.util.HashMap;
 import java.util.Map;
 
-@Order(1)
+@Order(2)
 @Aspect
 public class CachedProxy {
 

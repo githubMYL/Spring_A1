@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 
-@Order(2)
+@Order(1)
 @Aspect /** 공통기능을 구현한 프록시 클래스 */
 public class ProxyCalculator2 {
 
