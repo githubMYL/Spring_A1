@@ -1,17 +1,20 @@
 package config;
 
+import commons.CommonLibrary;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+
+import java.util.Locale;
 
 /** 웹 MVC 설정 항목 */
 
@@ -55,7 +58,8 @@ public class MvcConfig implements WebMvcConfigurer {
         templateEngine.setEnableSpringELCompiler(true);
         /** Java8 확장모듈 추가 temporals 식 객체*/
         templateEngine.addDialect(new Java8TimeDialect());
-//        templateEngine.addDialect(new LayoutDialect());
+        /** doBody 와 비슷한 기능 */
+        templateEngine.addDialect(new LayoutDialect());
         return templateEngine;
     }
 
@@ -73,5 +77,32 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         registry.viewResolver(thymeleafViewResolver());
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
+        ms.setBasenames("messages.commons");
+        ms.setDefaultEncoding("UTF-8");
+//        ms.setDefaultLocale(Locale.KOREAN);
+        return ms;
+    }
+
+    @Bean
+    public CommonLibrary cLib() {
+        return new CommonLibrary();
+    }
+
+    /** 컨트롤러 없이 바로 홈페이지를 띄울 수 있다 */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/mypage")
+                .setViewName("mypage/index");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/static/");
     }
 }

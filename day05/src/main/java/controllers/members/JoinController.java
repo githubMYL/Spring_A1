@@ -12,8 +12,11 @@ public class JoinController {
     @GetMapping    /** /member/join */
     public String join(Model model) {
 
-        model.addAttribute("title", "회원가입");
-        model.addAttribute("content", "회원가입내용");
+//        model.addAttribute("title", "회원가입");
+//        model.addAttribute("content", "회원가입내용");
+
+        Join join = new Join();
+        model.addAttribute("join", join);
 
         return "member/join";
     }
@@ -23,7 +26,8 @@ public class JoinController {
         System.out.println(join);
 //        System.out.println(model);
         System.out.println("POST로 유입!😁");
-        return "redirect:/member/login";
+        return "member/join";
+//        return "redirect:/member/login";
 
     }
 }
