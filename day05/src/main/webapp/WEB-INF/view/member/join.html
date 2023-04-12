@@ -1,43 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.new.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main}">
 
-    <main layout:fragment="content">
-        <h1 th:text="#{member.join}"></h1>
+<main layout:fragment="content">
+    <h1 th:text="#{member.join}"></h1>
 
-        <form method="post" th:action="@{/member/join}" th:object="${join}">
-            <dl>
-                <dt th:text="#{userId}"></dt>
-                <dd>
-                    <input type="text" name="userId" th:field="*{userId}">
-                </dd>
-            </dl>
-            <dl>
-                <dt th:text="#{userPw}"></dt>
-                <dd>
-                    <input type="password" name="userPw" th:field="*{userPw}">
-                </dd>
-            </dl>
-            <dl>
-                <dt th:text="#{userPwRe}"></dt>
-                <dd>
-                    <input type="password" name="userPwRe" th:field="*{userPwRe}">
-                </dd>
-            </dl>
-            <dl>
-                <dt th:text="#{userNm}"></dt>
-                <dd>
-                    <input type="text" name="userNm" th:field="*{userNm}">
-                </dd>
-            </dl>
-            <div>
-                <input type="checkbox" name="agree" value="true" id="agree">
-                <label for="agree" th:text="#{member.terms.agree}"></label>
-            </div>
-            <button type="submit" th:text="#{member.join.action}"></button>
-        </form>
-    </main>
-
-
+    <form method="post" th:action="@{/member/join}" th:object="${join}">
+        <!-- 공통 에러 메세지 부분 -->
+        <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+        <dl>
+            <dt th:text="#{userId}"></dt>
+            <dd>
+                <input type="text" name="userId" th:field="*{userId}">
+                <!-- 어떤게 에러인지 알려줌 -->
+                <div th:each="err : ${#fields.errors('userId')}" th:text="${err}"></div>
+            </dd>
+        </dl>
+        <dl>
+            <dt th:text="#{userPw}"></dt>
+            <dd>
+                <input type="password" name="userPw" th:field="*{userPw}">
+                <!-- 어떤게 에러인지 알려줌 -->
+                <div th:each="err : ${#fields.errors('userPw')}" th:text="${err}"></div>
+            </dd>
+        </dl>
+        <dl>
+            <dt th:text="#{userPwRe}"></dt>
+            <dd>
+                <input type="password" name="userPwRe" th:field="*{userPwRe}">
+                <!-- 어떤게 에러인지 알려줌 -->
+                <div th:each="err : ${#fields.errors('userPwRe')}" th:text="${err}"></div>
+            </dd>
+        </dl>
+        <dl>
+            <dt th:text="#{userNm}"></dt>
+            <dd>
+                <input type="text" name="userNm" th:field="*{userNm}">
+                <!-- 어떤게 에러인지 알려줌 -->
+                <div th:each="err : ${#fields.errors('userNm')}" th:text="${err}"></div>
+            </dd>
+        </dl>
+        <dl>
+            <dt th:text="#{email}"></dt>
+            <dd>
+                <input type="text" name="email" th:field="*{email}">
+                <!-- 어떤게 에러인지 알려줌 -->
+                <div th:each="err : ${#fields.errors('email')}" th:text="${err}"></div>
+            </dd>
+        </dl>
+        <div>
+            <input type="checkbox" name="agree" value="true" id="agree" th:field="*{agree}">
+            <label for="agree" th:text="#{member.terms.agree}"></label>
+            <!-- 어떤게 에러인지 알려줌 -->
+            <div th:each="err : ${#fields.errors('agree')}" th:text="${err}"></div>
+        </div>
+        <button type="submit" th:text="#{member.join.action}"></button>
+    </form>
+</main>
 </html>

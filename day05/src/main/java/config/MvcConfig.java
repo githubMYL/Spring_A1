@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
@@ -18,6 +19,7 @@ import java.util.Locale;
 
 /** 웹 MVC 설정 항목 */
 
+@Import(DbConfig.class)
 /** 스프링 설정 */
 @Configuration
 /** 웹 MVC 연결 */

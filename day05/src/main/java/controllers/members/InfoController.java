@@ -16,7 +16,7 @@ public class InfoController {
         member.setUserId("user01");
         member.setUserNm("장거한");
         member.setMobile("010-0000-0000");
-        member.setIntro("<h1>아이엠그라운드 자기소개 하기😎</h1>");
+//        member.setIntro("<h1>아이엠그라운드 자기소개 하기😎</h1>");
         member.setRegDt(LocalDateTime.now());
 
         model.addAttribute("member", member);
