@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /** SPRING 설정*/
 @Configuration
 /** 검색범위 설정 */
-@ComponentScan("controllers")
+@ComponentScan({"controllers", "models"})
 public class ControllerConfig {
     @Bean
     public HelloController helloController() {
