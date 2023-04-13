@@ -5,6 +5,7 @@ import models.member.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +23,13 @@ public class LoginController {
     private final LoginService service;
 
     @GetMapping
-    public String login(Model model) {
-
+    public String login(Model model, @CookieValue(name="saveId", required = false) String userId) {
+        System.out.println(userId);
         Login login = new Login();
+        if (userId != null) {
+            login.setUserId(userId);
+            login.setSaveId(true);
+        }
         model.addAttribute("login", login);
 
         return "member/login";

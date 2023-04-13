@@ -1,14 +1,18 @@
 package config;
 
+
 import commons.CommonLibrary;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -26,6 +30,10 @@ import java.util.Locale;
 @EnableWebMvc
 public class MvcConfig implements WebMvcConfigurer {
 
+    @Value("${environment}")
+    private String environment;
+    @Value("${file.upload.path}")
+    private String fileUploadPath;
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -42,13 +50,15 @@ public class MvcConfig implements WebMvcConfigurer {
 //    }
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
+        boolean isCacheable = environment.equals("real")?true:false;
+
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("/WEB-INF/view/");
         templateResolver.setSuffix(".html");
         /** 번역을 매번하지 않음 동일한 캐시파일 부담이 적음 (개발을 할때 부하가 걸릴수도 있음) */
         /** 서비스 배포시작시엔 true 로 변경 */
-        templateResolver.setCacheable(false);
+        templateResolver.setCacheable(isCacheable);
         return templateResolver;
     }
 
@@ -98,13 +108,39 @@ public class MvcConfig implements WebMvcConfigurer {
     /** 컨트롤러 없이 바로 홈페이지를 띄울 수 있다 */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+
         registry.addViewController("/mypage")
                 .setViewName("mypage/index");
+
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
+        /** 파일 업로드 경로 정적 경로매칭 */
+        registry.addResourceHandler("/uploads/**")
+                /** 서버에서는 file 쪽에서 / 하나를 제거함 */
+                .addResourceLocations("file:///" + fileUploadPath);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+//        WebMvcConfigurer.super.addInterceptors(registry); 기본생성된거
+        registry.addInterceptor(memberOnlyInterceptors())
+                .addPathPatterns("/mypage/**");
+    }
+
+    @Bean
+    public interceptors.MemberOnlyInterceptors memberOnlyInterceptors() {
+
+        return new interceptors.MemberOnlyInterceptors();
+    }
+
+    public static PropertySourcesPlaceholderConfigurer properties() {
+        PropertySourcesPlaceholderConfigurer conf = new PropertySourcesPlaceholderConfigurer();
+        conf.setLocations(new ClassPathResource("application.properties"));
+
+        return conf;
     }
 }

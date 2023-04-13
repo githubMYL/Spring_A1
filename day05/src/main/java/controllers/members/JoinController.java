@@ -43,10 +43,13 @@ public class JoinController {
     @PostMapping   /** /member/join */
     /** @valid를 사용해야 검증을 해줌 (대신 커맨드객체뒤에 Errors 가 들어와야 된다)*/
     public String joinPs(@Valid Join join, Errors errors, Model model) {
+
+        System.out.println(join);
+
         validator.validate(join, errors);
 
         if (errors.hasErrors()) {
-            /** 에러가 있으면 처리X -> 양식 */
+            /** 에러가 있으면 처리 X -> 양식 */
             return "member/join";
         }
 //        System.out.println(model);

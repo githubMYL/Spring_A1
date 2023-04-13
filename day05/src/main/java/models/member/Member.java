@@ -12,5 +12,6 @@ public class Member {
     private String userNm;
     private String mobile;
     private String email;
+
     private LocalDateTime regDt;
 }

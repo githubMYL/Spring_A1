@@ -95,6 +95,7 @@
       <artifactId>logback-classic</artifactId>
       <version>1.4.6</version>
     </dependency>
+    <!-- DB 인코딩 설정 -->
     <dependency>
       <groupId>com.oracle.ojdbc</groupId>
       <artifactId>orai18n</artifactId>

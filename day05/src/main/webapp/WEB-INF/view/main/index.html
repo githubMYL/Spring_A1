@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/main}">
+      layout:decorate="~{layouts/main}"> <!-- decorate == main.html을 가져옴. -->
 
     <main layout:fragment="content">
-        <h1>본문!!😁</h1>
+        <th:block th:if="${session.member == null}">
+            <a th:href="@{/member/join}">회원가입</a>
+            <a th:href="@{/member/login}">로그인</a>
+        </th:block>
+        <th:block th:unless="${session.member == null}">
+            [[@{session.member.userNm}]]([[${session.member.userId}]]) 님 로그인
+            <a th:href="@{/member/logout}">로그아웃</a>
+            <a th:href="@{/mypage}">마이페이지</a>
+        </th:block>
     </main>
-
 </html>
